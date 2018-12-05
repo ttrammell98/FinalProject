@@ -26,14 +26,14 @@ typedef enum
 	Jack,
 	Queen,
 	King
-	} Face;
+} Face;
 typedef enum
-{	
+{
 	Spades,
 	Clubs,
 	Hearts,
 	Diamond
-	}Suit;
+}Suit;
 
 typedef struct Card
 {

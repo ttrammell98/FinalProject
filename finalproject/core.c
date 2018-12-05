@@ -1,4 +1,4 @@
-#include<stdio.h>
+'#include<stdio.h>
 #include<stdlib.h>
 #include "types.h"
 #include <time.h>
@@ -25,20 +25,18 @@ int main(int argc, const char * argv[])
 	p.count = 1;
 
 	srand(time(NULL));
-	//char *face = GenerateFace();
-	//char *suit = GenerateSuit();
-
 
 	Card c1;
 	Card c2;
-	//c1.Face = rand() % 13 + 1;
-	//c1.Suit = rand() % 3 + 0;
+	Card dc1;
+	Card dc2;
 
 	char result;
 	printf("\nDo you want to (P)lay or (Q)uit: ");
 	scanf("%c",&result);
 
 	int bet;
+	char option;
 	if((result != 'p') && ( result != 'P') && (result != 'q') && (result != 'Q'))
 	{
 		printf("\nNot a valid input");
@@ -46,9 +44,11 @@ int main(int argc, const char * argv[])
 
 	while(result == 'P' || result == 'p')
 	{
+		int playerTotal = 0;
+		int dealerTotal = 0;
 		printf("How much would you like to bet? ");
 		scanf("%d", &bet);
-		if (bet > *money)
+		if (bet > p.amount)
 		{
 			printf("\nIllegal bet\n");
 		}
@@ -56,20 +56,35 @@ int main(int argc, const char * argv[])
 		{
 			c1 = GenerateCard();
 			c2 = GenerateCard();
-			//if(c1.face != c2.face || c1.suit != c2.suit){
 			printf("\nCard 1: ");
-			printf("%s",face[c1.face]);  //might need to decrement by 1, we can get (null) of spades rn
+			printf("%s",face[c1.face-1]);
 			printf(" of ");
 			printf("%s",suit[c1.suit]);
 			printf("\nCard 2: ");
-			printf("%s",face[c2.face]);
+			printf("%s",face[c2.face-1]);
 			printf(" of ");
-                        printf("%s\n",suit[c2.suit]);
+                        printf("%s\n\n",suit[c2.suit]);
+			printf("Total Point Worth: ");
+			playerTotal += GetPointValue(c1.face);
+			playerTotal += GetPointValue(c2.face);
+			printf("%d\n", playerTotal);
 
-			//}
-			//else{
-			//	printf("%s", "Heel");
-			//}
+                        dc1 = GenerateCard();
+                        dc2 = GenerateCard();
+			printf("The dealer's face-up card is a ");
+			printf("%s",face[dc1.face-1]);
+			printf(" of ");
+			printf("%s\n", suit[dc1.suit]);
+			int firstCardTotal = GetPointValue(dc1.face);
+			printf("Dealer Total Showing: ");
+			printf("%d\n\n",firstCardTotal);
+
+			printf("Would you like to (H)it or (S)tand? ");
+			scanf("%c", option);
+
+			printf("%c", option);
+
+
 		}
 		result = 'q';
 	}
@@ -93,18 +108,23 @@ Card GenerateCard()
 	temp.face = r1;
 	temp.suit = r2;
 	return temp;
-
-
-//const char * suit[] = { "Hearts", "Clubs", "Spades", "Diamonds"};
-	//for(int i=0; i < 1; i++){
-	//	printf("%s", suit[r2]);
-	//}
-//printf("%s", temp.face);
-	//printf("\n");
-	//printf("%s", temp->Suit);
 }
 
 
+int GetPointValue(int faceVal)
+{
+	int realVal;
+	if(faceVal == 11 || faceVal == 12 || faceVal == 13)
+	{
+		realVal = 10;
+		return realVal;
+	}
+	else
+	{
+		return faceVal;
+	}
+
+}
 
 
 
