@@ -58,13 +58,12 @@ int main(int argc, const char * argv[])
 			c2 = GenerateCard();
 			//if(c1.face != c2.face || c1.suit != c2.suit){
 			printf("\nCard 1: ");
-			printf("%s",face[c1.face]);  //might need to decrement by 1, we can get (null) of spades rn
+			printf("%s",face[c1.face]);
 			printf(" of ");
 			printf("%s",suit[c1.suit]);
 			printf("\nCard 2: ");
 			printf("%s",face[c2.face]);
-			printf(" of ");
-                        printf("%s\n",suit[c2.suit]);
+                        printf("%s",suit[c2.suit]);
 
 			//}
 			//else{
@@ -84,9 +83,10 @@ Card GenerateCard()
         Card temp;
 	//int randFace = rand() % 13 + 1;
 	//temp.Face.randFace;
-        int r1 = rand() % 13 + 1; 
+        int r1 = rand() % 13 + 1;
+ 
 	int r2 = rand() % 4;
-
+	//enum Face;
 	const char * face1 = face[r1];
 	const char * suit1 = suit[r2];
 
@@ -100,7 +100,7 @@ Card GenerateCard()
 	//	printf("%s", suit[r2]);
 	//}
 //printf("%s", temp.face);
-	//printf("\n");
+	printf("\n");
 	//printf("%s", temp->Suit);
 }
 
