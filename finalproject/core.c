@@ -1,4 +1,4 @@
-'#include<stdio.h>
+#include<stdio.h>
 #include<stdlib.h>
 #include "types.h"
 #include <time.h>
@@ -6,6 +6,9 @@
 //char *GenerateFace();
 //char *GenerateSuit();
 Card GenerateCard();
+int GetPointValue();
+int GetDealerValue();
+int DealerPlay();
 
 const char * suit[] = { "Hearts", "Clubs", "Spades", "Diamonds"};
 const char * face[] ={ "Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight",
@@ -21,7 +24,7 @@ int main(int argc, const char * argv[])
 
 	Player p;
 	p.name = name;
-	p.amount =(int) money;
+	p.amount = atoi(money);
 	p.count = 1;
 
 	srand(time(NULL));
@@ -48,6 +51,8 @@ int main(int argc, const char * argv[])
 		int dealerTotal = 0;
 		printf("How much would you like to bet? ");
 		scanf("%d", &bet);
+		//printf("%d\n",bet);
+		//printf("%d\n",p.amount);
 		if (bet > p.amount)
 		{
 			printf("\nIllegal bet\n");
@@ -75,18 +80,86 @@ int main(int argc, const char * argv[])
 			printf("%s",face[dc1.face-1]);
 			printf(" of ");
 			printf("%s\n", suit[dc1.suit]);
-			int firstCardTotal = GetPointValue(dc1.face);
+			int firstCardTotal = GetDealerValue(dc1.face);
 			printf("Dealer Total Showing: ");
 			printf("%d\n\n",firstCardTotal);
 
 			printf("Would you like to (H)it or (S)tand? ");
-			scanf("%c", option);
+			scanf(" %c", &option);
 
-			printf("%c", option);
+			while(option == 'h' || option == 'H'){
+				Card temp;
+				temp = GenerateCard();
+				printf("\nCard: ");
+                        	printf("%s",face[temp.face-1]);
+                        	printf(" of ");
+                        	printf("%s\n\n",suit[temp.suit]);
+                        	printf("Total Point Worth: ");
+                        	playerTotal += GetPointValue(temp.face);
+                        	printf("%d\n", playerTotal);
 
+				if(playerTotal < 21){
+					printf("(H)it or (S)tand? ");
+                        		scanf(" %c", &option);
+
+					if(option == 's' || option == 'S'){
+						printf("The dealers second card is a ");
+	                                	printf("%s",face[dc2.face-1]);
+        	                        	printf(" of ");
+                	                	printf("%s\n\n",suit[dc2.suit]);
+                        	        	dealerTotal = firstCardTotal + GetDealerValue(dc2.face);
+                                		printf("Dealer Total: ");
+                                		printf("%d\n\n",dealerTotal);
+						dealerTotal = DealerPlay(dealerTotal);
+						if(dealerTotal > 21){
+							printf("Dealer Busted! You Win!");
+							p.amount += (2 * bet);
+							printf("%d",p.amount);
+						}
+						else{
+							if(dealerTotal > playerTotal){
+								printf("You Lose!");
+								p.amount -= bet;
+								printf("%d",p.amount);
+							}
+							else if(dealerTotal < playerTotal){
+								printf("You Win!");
+                                                                p.amount += (2 * bet);
+                                                                printf("%d",p.amount);
+							}
+							else{
+								printf("Draw! Bet returned!");
+							}
+						}
+
+					}
+
+				}
+				else if(playerTotal > 21){
+					printf("You have busted!\n");
+					option = 's';
+					p.amount -= bet;
+					printf("%d\n", p.amount);
+					if(p.amount == 0){
+						result = 'q';
+					}
+					printf("Would you like to (p)lay again or (q)uit? ");
+					scanf(" %c", &result);
+				}
+
+			}
+			/*if(result != 'q'){
+				printf("The dealers second card is a ");
+				printf("%s",face[dc2.face-1]);
+				printf(" of ");
+                        	printf("%s\n\n",suit[dc2.suit]);
+				dealerTotal = firstCardTotal + GetDealerValue(dc2.face);
+				printf("Dealer Total: ");
+				printf("%d\n",dealerTotal);
+			}*/
 
 		}
-		result = 'q';
+		//result = 'q';
 	}
 
 
@@ -119,6 +192,12 @@ int GetPointValue(int faceVal)
 		realVal = 10;
 		return realVal;
 	}
+	else if(faceVal == 1){
+		printf("Would you like your Ace to be a (1) or (11)? ");
+		scanf("%d", &realVal);
+		printf("%d\n", realVal);
+		return realVal;
+	}
 	else
 	{
 		return faceVal;
@@ -126,79 +205,33 @@ int GetPointValue(int faceVal)
 
 }
 
-
-
-
-
-
-
-/*
-char *GenerateFace()
+int GetDealerValue(int faceVal)
 {
-	Card->Face = rand() % 13 + 1;
+        int realVal;
+        if(faceVal == 11 || faceVal == 12 || faceVal == 13)
+        {
+                realVal = 10;
+                return realVal;
+        }
+        else
+        {
+                return faceVal;
+        }
 
-	switch(randVal){
-		case 1:
-			return "Ace";
-			break;
-		case 2:
-                        return "Two";
-                        break;
-		case 3:
-                        return "Three";
-                        break;
-		case 4:
-                        return "Four";
-                        break;
-		case 5:
-                        return "Five";
-                        break;
-		case 6:
-                        return "Six";
-                        break;
-		case 7:
-                        return "Seven";
-                        break;
-		case 8:
-                        return "Eight";
-                        break;
-		case 9:
-                        return "Nine";
-                        break;
-		case 10:
-                        return "Ten";
-                        break;
-		case 11:
-                        return "Jack";
-                        break;
-		case 12:
-                        return "Queen";
-                        break;
-		case 13:
-                        return "King";
-                        break;
-	}
 }
 
-char *GenerateSuit(){
-	int randVal = rand() % 4;
 
-	switch(randVal){
-                case 0:
-                        return "Spades";
-                        break;
-                case 1:
-                        return "Hearts";
-                        break;
-                case 2:
-                        return "Clubs";
-                        break;
-                case 3:
-                        return "Diamonds";
-                        break;
-        }
-*/
-
-
-
+int DealerPlay(int curTotal){
+	int total = curTotal;
+	while(total < 17){
+		Card temp;
+		temp = GenerateCard();
+		printf("The dealer's card is a ");
+		printf("%s", face[temp.face-1]);
+		printf(" of ");
+		printf("%s", suit[temp.suit]);
+		total += GetDealerValue(temp.face);
+	}
+	return total;
+}
 
