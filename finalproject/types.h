@@ -40,3 +40,5 @@ typedef struct Card
 	Face face;
 	Suit suit;
 } Card;
+
+typedef enum { FALSE, TRUE } bool;
