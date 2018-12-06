@@ -34,9 +34,9 @@ int main(int argc, const char * argv[])
 	Card dc1;
 	Card dc2;
 
-	char result;
-	printf("\nDo you want to (P)lay or (Q)uit: ");
-	scanf("%c",&result);
+	char result = 'p';
+	//printf("\nDo you want to (P)lay or (Q)uit: ");
+	//scanf("%c",&result);
 
 	int bet;
 	char option;
@@ -49,6 +49,15 @@ int main(int argc, const char * argv[])
 	{
 		int playerTotal = 0;
 		int dealerTotal = 0;
+
+		printf("\nDo you want to (P)lay or (Q)uit: ");
+	        scanf("%c",&result);
+
+		if(result == 'Q' || result == 'q'){
+			break;
+		}
+
+
 		printf("How much would you like to bet? ");
 		scanf("%d", &bet);
 		//printf("%d\n",bet);
@@ -87,6 +96,11 @@ int main(int argc, const char * argv[])
 			printf("Would you like to (H)it or (S)tand? ");
 			scanf(" %c", &option);
 
+			if(option == 's' || option == 'S'){
+				result = 'q';
+				break;
+			}
+
 			while(option == 'h' || option == 'H'){
 				Card temp;
 				temp = GenerateCard();
@@ -120,15 +134,31 @@ int main(int argc, const char * argv[])
 							if(dealerTotal > playerTotal){
 								printf("You Lose!");
 								p.amount -= bet;
-								printf("%d",p.amount);
+								printf("%d\n",p.amount);
+								if(p.amount == 0){
+                                                			result = 'q';
+                                                			break;
+					                        }
+
+								printf("Would you like to (p)lay again or (q)uit? ");
+                                        			scanf(" %c", &result);
 							}
 							else if(dealerTotal < playerTotal){
 								printf("You Win!");
                                                                 p.amount += (2 * bet);
-                                                                printf("%d",p.amount);
+                                                                printf("%d\n",p.amount);
+								if(p.amount == 0){
+			                                                result = 'q';
+                        			                        break;
+                                        			}
+
+								printf("Would you like to (p)lay again or (q)uit? ");
+                                        			scanf(" %c", &result);
 							}
 							else{
 								printf("Draw! Bet returned!");
+								printf("Would you like to (p)lay again or (q)uit? ");
+                                        			scanf(" %c", &result);
 							}
 						}
 
@@ -142,12 +172,14 @@ int main(int argc, const char * argv[])
 					printf("%d\n", p.amount);
 					if(p.amount == 0){
 						result = 'q';
+						break;
 					}
 					printf("Would you like to (p)lay again or (q)uit? ");
 					scanf(" %c", &result);
 				}
 
 			}
+
 			/*if(result != 'q'){
 				printf("The dealers second card is a ");
 				printf("%s",face[dc2.face-1]);
@@ -161,7 +193,7 @@ int main(int argc, const char * argv[])
 		}
 		//result = 'q';
 	}
-
+	printf("You have quit.\n");
 
 
 	return 0;
@@ -195,7 +227,7 @@ int GetPointValue(int faceVal)
 	else if(faceVal == 1){
 		printf("Would you like your Ace to be a (1) or (11)? ");
 		scanf("%d", &realVal);
-		printf("%d\n", realVal);
+		//printf("%d\n", realVal);
 		return realVal;
 	}
 	else
