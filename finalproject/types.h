@@ -1,3 +1,5 @@
+#ifndef types_h
+#define types_h
 typedef struct Player
 {
 	const char * name;  //string
@@ -42,3 +44,5 @@ typedef struct Card
 } Card;
 
 typedef enum { FALSE, TRUE } bool;
+
+#endif

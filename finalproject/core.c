@@ -61,12 +61,11 @@ int main(int argc, const char * argv[])
 		int playerTotal = 0;
 		//int dealerTotal = 0;
 		dealerTotal = 0;
-		int lost = 0;
-		//enum bool lost = FALSE;
+		//int lost = 0;
+		 bool lost = FALSE;
 		printf("\nHow much would you like to bet? ");
 		scanf("%d", &bet);
-		//printf("%d\n",bet);
-		//printf("%d\n",p.amount);
+
 		if (bet > p.amount)
 		{
 			printf("\nIllegal bet\n");
@@ -116,58 +115,11 @@ int main(int argc, const char * argv[])
 				if(playerTotal < 21 || playerTotal == 21){
 					printf("(H)it or (S)tand? ");
                         		scanf(" %c", &option);
-
-					/*if(option == 's' || option == 'S'){
-						printf("The dealers second card is a ");
-	                                	printf("%s",face[dc2.face-1]);
-        	                        	printf(" of ");
-                	                	printf("%s\n\n",suit[dc2.suit]);
-                        	        	dealerTotal = firstCardTotal + GetDealerValue(dc2.face);
-                                		printf("Dealer Total: ");
-                                		printf("%d\n\n",dealerTotal);
-						dealerTotal = DealerPlay(dealerTotal);
-						if(dealerTotal > 21){
-             						printf("Dealer Busted! You Win!\n");
-             						p.amount += (2 * bet);
-             						printf("%d",p.amount);
-        					}
-        					else{
-            						if(dealerTotal > playerTotal){
-            							printf("You Lose!\n");
-            							p.amount -= bet;
-            							printf("%d\n",p.amount);
-            							if(p.amount == 0){
-               								result = 'q';
-               								break;
-            							}
-            							printf("Would you like to (p)lay again or (q)uit? ");
-            							scanf(" %c", &result);
-            						}
-            						else if(dealerTotal < playerTotal){
-               							printf("You Win!\n");
-               							p.amount += (2 * bet);
-               							printf("%d\n",p.amount);
-           							if(p.amount == 0){
-                							result = 'q';
-               								break;
-      								}
-          						printf("Would you like to (p)lay again or (q)uit? ");
-               						scanf(" %c", &result);
-            						}
-            						else{
-               							printf("Draw! Bet returned!\n");
-               							printf("Would you like to (p)lay again or (q)uit? ");
-               							scanf(" %c", &result);
-            						}
-        					}
-
-					}*/
-
 				}
 				else if(playerTotal > 21){
 					printf("You have busted!\n");
 					option = 's';
-					lost = 1;  //lost = TRUE;
+					lost = TRUE;  //lost = TRUE;
 					p.amount -= bet;
 					d.amountTaken += bet;
 					printf("Current Money: $%d\n\n\n", p.amount);
@@ -181,7 +133,7 @@ int main(int argc, const char * argv[])
 				}
 
 			}//end of while hit is selected
-			if(lost == 0){   //lost = FALSE;
+			if(lost == FALSE){   //lost = FALSE;
 				printf("\nThe dealers second card is a ");
                                 printf("%s",face[dc2.face-1]);
                                 printf(" of ");
@@ -243,18 +195,15 @@ int main(int argc, const char * argv[])
 
 		}//end of while result is play
 	}
-	printf("Game Over! Summary has been recorded!\n");
-	printf("Player game count: %d\n", p.count);
-	printf("Dealer game count: %d\n", d.count);
-	printf("Dealer amount taken: %d\n", d.amountTaken);
+	printf("Game Over! Summary has been recorded!\n\n");
 
-	fprintf(file, "Player: %s\n", p.name);
-	fprintf(file, "Money left: %d\n", p.amount);
-	fprintf(file, "Games played: %d\n", p.count);
+	fprintf(file, "Player: %s\r\n", p.name);
+	fprintf(file, "Money left: %d\r\n", p.amount);
+	fprintf(file, "Games played: %d\r\n", p.count);
 
-	fprintf(file2, "Dealer\n");
-	fprintf(file2, "Money taken: %d\n", d.amountTaken);
-	fprintf(file2, "Games played: %d\n", d.count);
+	fprintf(file2, "Dealer\r\n");
+	fprintf(file2, "Money taken: %d\r\n", d.amountTaken);
+	fprintf(file2, "Games played: %d\r\n", d.count);
 
 
 	fclose(file);

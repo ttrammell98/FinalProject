@@ -1,3 +1,3 @@
 Player: Tyler
-Money left: 150
-Games played: 3
+Money left: 95
+Games played: 1
