@@ -1,0 +1,3 @@
+Player: Trent
+Money left: 420
+Games played: 5

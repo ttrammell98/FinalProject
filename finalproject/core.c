@@ -4,8 +4,6 @@
 #include <time.h>
 #include <unistd.h>
 
-//char *GenerateFace();
-//char *GenerateSuit();
 Card GenerateCard();
 int GetPointValue();
 int GetDealerValue();
@@ -24,10 +22,17 @@ int main(int argc, const char * argv[])
 	printf("\nCurrent Balance: $%s",money);
 	printf("\n\n\n");
 
+	FILE * file = fopen("data.txt", "w");
+	FILE * file2 = fopen("dealer.txt", "w");
+
 	Player p;
 	p.name = name;
 	p.amount = atoi(money);
-	p.count = 1;
+	p.count = 0;
+
+	Dealer d;
+	d.count = 0;
+	d.amountTaken = 0;
 
 	srand(time(NULL));
 
@@ -44,7 +49,7 @@ int main(int argc, const char * argv[])
 	char option;
 
 	//bool lost = FALSE;
-	int lost = 0;
+	//int lost = 0;
 
 	if((result != 'p') && ( result != 'P') && (result != 'q') && (result != 'Q'))
 	{
@@ -55,6 +60,7 @@ int main(int argc, const char * argv[])
 	{
 		int playerTotal = 0;
 		int dealerTotal = 0;
+		int lost = 0;
 
 		printf("\nHow much would you like to bet? ");
 		scanf("%d", &bet);
@@ -161,6 +167,7 @@ int main(int argc, const char * argv[])
 					option = 's';
 					lost = 1;
 					p.amount -= bet;
+					d.amountTaken += bet;
 					printf("Current Money: $%d\n\n\n", p.amount);
 					if(p.amount == 0){
 						result = 'q';
@@ -188,7 +195,7 @@ int main(int argc, const char * argv[])
 				if(dealerTotal > 21){
 			             	printf("\nDealer Busted! You Win!\n");
            	  			p.amount += (2 * bet);
-             				printf("Current Money: $%d",p.amount);
+             				printf("Current Money: $%d\n",p.amount);
 					if(p.amount == 0){
                                            result = 'q';
                                            break;
@@ -201,6 +208,7 @@ int main(int argc, const char * argv[])
             				if(dealerTotal > playerTotal){
             					printf("\nYou Lose!\n\n");
             					p.amount -= bet;
+						d.amountTaken += bet;
             					printf("Current Money: $%d\n\n\n",p.amount);
         	    				if(p.amount == 0){
      	          					result = 'q';
@@ -228,13 +236,27 @@ int main(int argc, const char * argv[])
             				}
         			}
 			}
-
+		p.count += 1;
+		d.count += 1;
 
 		}//end of while result is play
 	}
 	printf("Game Over! Summary has been recorded!\n");
+	printf("Player game count: %d\n", p.count);
+	printf("Dealer game count: %d\n", d.count);
+	printf("Dealer amount taken: %d\n", d.amountTaken);
+
+	fprintf(file, "Player: %s\n", p.name);
+	fprintf(file, "Money left: %d\n", p.amount);
+	fprintf(file, "Games played: %d\n", p.count);
+
+	fprintf(file2, "Dealer\n");
+	fprintf(file2, "Money taken: %d\n", d.amountTaken);
+	fprintf(file2, "Games played: %d\n", d.count);
 
 
+	fclose(file);
+	fclose(file2);
 	return 0;
 }
 
