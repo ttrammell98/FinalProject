@@ -1,3 +1,3 @@
 Dealer
-Money taken: 400
-Games played: 5
+Money taken: 25
+Games played: 3

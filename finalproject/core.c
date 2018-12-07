@@ -13,7 +13,7 @@ void CheckResult();
 const char * suit[] = { "Hearts", "Clubs", "Spades", "Diamonds"};
 const char * face[] ={ "Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight",
  "Nine", "Ten" , "Jack", "Queen", "King"};
-
+int dealerTotal;
 int main(int argc, const char * argv[])
 {
 	const char * name = argv[1];
@@ -59,9 +59,10 @@ int main(int argc, const char * argv[])
 	while(result == 'P' || result == 'p')
 	{
 		int playerTotal = 0;
-		int dealerTotal = 0;
+		//int dealerTotal = 0;
+		dealerTotal = 0;
 		int lost = 0;
-
+		//enum bool lost = FALSE;
 		printf("\nHow much would you like to bet? ");
 		scanf("%d", &bet);
 		//printf("%d\n",bet);
@@ -82,9 +83,10 @@ int main(int argc, const char * argv[])
 			printf("%s",face[c2.face-1]);
 			printf(" of ");
                         printf("%s\n",suit[c2.suit]);
-			printf("Total Points: ");
+			//printf("Total Points: ");
 			playerTotal += GetPointValue(c1.face);
 			playerTotal += GetPointValue(c2.face);
+			printf("Total Points: ");
 			printf("%d\n\n", playerTotal);
 
                         dc1 = GenerateCard();
@@ -165,7 +167,7 @@ int main(int argc, const char * argv[])
 				else if(playerTotal > 21){
 					printf("You have busted!\n");
 					option = 's';
-					lost = 1;
+					lost = 1;  //lost = TRUE;
 					p.amount -= bet;
 					d.amountTaken += bet;
 					printf("Current Money: $%d\n\n\n", p.amount);
@@ -179,7 +181,7 @@ int main(int argc, const char * argv[])
 				}
 
 			}//end of while hit is selected
-			if(lost == 0){
+			if(lost == 0){   //lost = FALSE;
 				printf("\nThe dealers second card is a ");
                                 printf("%s",face[dc2.face-1]);
                                 printf(" of ");
@@ -306,6 +308,18 @@ int GetDealerValue(int faceVal)
                 realVal = 10;
                 return realVal;
         }
+	else if(faceVal == 1) //added this
+	{
+		if(dealerTotal < 11)
+		{
+			realVal = 11;
+		}
+		else
+		{
+			realVal = 1;
+		}
+		return realVal;
+	}  //stop here
         else
         {
                 return faceVal;
